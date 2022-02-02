@@ -3,7 +3,11 @@ pragma solidity ^0.8.6;
 
 contract TasksContract {
 
-    uint taskCounter = 0;
+    uint public taskCounter = 0;
+
+    constructor() {
+        createTask('Mi primer tarea de ejemplo', 'Tengo que hacer algo');
+    }
 
     struct Task {
         uint256 id;
@@ -13,12 +17,16 @@ contract TasksContract {
         uint256 createdAt;
     }
 
-    mapping(uint256 ==> Task) public tasks;
+    mapping(uint256 => Task) public tasks;
 
-    function createTask(string memory _title, string _description) public {
-        tasks[taskCounter] = Task(taskCounter, _title, _descripction, false, block.timestamp);
+    function createTask(string memory _title, string memory _description) public {
+        tasks[taskCounter] = Task(taskCounter, _title, _description, false, block.timestamp);
         taskCounter++;
     }
 
-    // function toggleDone() {}
+    function toggleDone(uint _id) public {
+        Task memory _task = tasks[_id];
+        _task.done = !_task.done;
+        tasks[_id] = _task;
+    }
 }
